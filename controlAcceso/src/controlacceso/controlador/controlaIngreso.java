@@ -28,13 +28,25 @@ public class controlaIngreso {
     }
     
     public static boolean comparaLogin(ResultSet consultaBD, String user, String pass) throws SQLException{
-        String usuario="", contrasena="", estado;
+        String usuario="", contrasena="", estado = null;
         while(consultaBD.next()){
             usuario = consultaBD.getString("usuarios_nombre");
             contrasena = consultaBD.getString("usuarios_contrasena");
             estado = consultaBD.getString("usuarios_estado");
         }
-        return usuario.equals(user) && contrasena.equals(pass);    
+            
+            if(usuario.equals(user) && contrasena.equals(pass)){
+                if(estado.equals("1")){
+                    return true;
+                } else {
+                    System.out.println("el usuario se encuentra deshabilitado");
+                    return false;
+            }
+            }else{
+                System.out.println("el usuario y/o contraseña no coinciden");
+                return false;
+            }
+  
         
     }
     

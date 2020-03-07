@@ -27,6 +27,7 @@ public class seguridadModelo {
         boolean concedeAcceso = controlaIngreso.comparaLogin(resultadoBD, user, pass);
         
         conexion.close();
+        System.out.println("conexion cerrada");
         
         return concedeAcceso;        
         
