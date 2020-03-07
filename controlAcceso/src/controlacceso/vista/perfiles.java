@@ -182,6 +182,8 @@ public class perfiles extends javax.swing.JInternalFrame {
         
                 if(estadoInsert==1){
                     JOptionPane.showMessageDialog(null, "Perfil Ingresado correctamente");
+                    perfilNombre.setText("");
+                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Error al ingresar el perfil");
                 }
