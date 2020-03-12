@@ -261,7 +261,7 @@ public class perfiles extends javax.swing.JInternalFrame {
        
         Connection con;
         try {
-            con = conecta.conexion();
+            con = (Connection) conecta.conexion();
         Statement stmt = (Statement) con.createStatement();
         ResultSet rs = stmt.executeQuery("Select * from tbl_perfiles where 1");
         ResultSetMetaData rsmd = rs.getMetaData();
