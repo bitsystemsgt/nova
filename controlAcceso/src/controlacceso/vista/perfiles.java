@@ -5,11 +5,19 @@
  */
 package controlacceso.vista;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
 import controlacceso.controlador.controlaPerfiles;
+import controlacceso.modelo.conecta;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import controlacceso.modelo.modeloPerfiles.*;
 
 /**
  *
@@ -20,8 +28,9 @@ public class perfiles extends javax.swing.JInternalFrame {
     /**
      * Creates new form seguridad
      */
-    public perfiles() {
+    public perfiles() throws SQLException {
         initComponents();
+         
     }
 
     /**
@@ -40,10 +49,11 @@ public class perfiles extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         perfilNombre = new javax.swing.JTextField();
         perfilEstado = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        jButtonGuardaPerfil = new javax.swing.JButton();
         jPanelEditar = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPerfiles = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -58,10 +68,10 @@ public class perfiles extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Estado");
 
-        jButton1.setText("Guardar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonGuardaPerfil.setText("Guardar");
+        jButtonGuardaPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonGuardaPerfilActionPerformed(evt);
             }
         });
 
@@ -72,7 +82,7 @@ public class perfiles extends javax.swing.JInternalFrame {
             .addGroup(jPanelCrearLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(jButtonGuardaPerfil)
                     .addGroup(jPanelCrearLayout.createSequentialGroup()
                         .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -95,24 +105,45 @@ public class perfiles extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(perfilEstado))
                 .addGap(34, 34, 34)
-                .addComponent(jButton1)
+                .addComponent(jButtonGuardaPerfil)
                 .addContainerGap(157, Short.MAX_VALUE))
         );
 
         jTabbedPane3.addTab("Crear", jPanelCrear);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPerfiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id Perfil", "Nombre", "Estado"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaPerfiles);
+
+        jButton2.setText("Busca Perfil");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelEditarLayout = new javax.swing.GroupLayout(jPanelEditar);
         jPanelEditar.setLayout(jPanelEditarLayout);
@@ -121,12 +152,18 @@ public class perfiles extends javax.swing.JInternalFrame {
             .addGroup(jPanelEditarLayout.createSequentialGroup()
                 .addGap(83, 83, 83)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEditarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(224, 224, 224))
         );
         jPanelEditarLayout.setVerticalGroup(
             jPanelEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEditarLayout.createSequentialGroup()
-                .addContainerGap(123, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(56, 56, 56))
         );
@@ -179,7 +216,7 @@ public class perfiles extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonGuardaPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardaPerfilActionPerformed
         try {
             // TODO add your handling code here:
             String nombrePerfil;
@@ -208,11 +245,49 @@ public class perfiles extends javax.swing.JInternalFrame {
         
         
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonGuardaPerfilActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        
+//        mConsultaPerfiles mcp = new mConsultaPerfiles();    
+        DefaultTableModel modelo = new DefaultTableModel();
+        tablaPerfiles.setModel(modelo);
+        modelo.addColumn("Id");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Estado");
+//codigo migrado de modelo
+       
+        Connection con;
+        try {
+            con = conecta.conexion();
+        Statement stmt = (Statement) con.createStatement();
+        ResultSet rs = stmt.executeQuery("Select * from tbl_perfiles where 1");
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+//ingresa las filas a un objeto
+        while(rs.next()){
+            Object[] fila = new Object[rsmd.getColumnCount()];
+            for (int i = 0; i<rsmd.getColumnCount(); i++){
+                fila[i] = rs.getObject(i+1);                
+            }
+            modelo.addRow(fila);
+        }
+ //        fin codigo migrado modelo      
+
+
+        } catch (SQLException ex) {
+            Logger.getLogger(perfiles.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonGuardaPerfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -222,8 +297,8 @@ public class perfiles extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanelEditar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JCheckBox perfilEstado;
     private javax.swing.JTextField perfilNombre;
+    private javax.swing.JTable tablaPerfiles;
     // End of variables declaration//GEN-END:variables
 }

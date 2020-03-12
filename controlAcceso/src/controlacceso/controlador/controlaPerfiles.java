@@ -20,4 +20,10 @@ public class controlaPerfiles {
         return estadoInsert;
     }
     
+    public static void cConsultaPerfiles() throws SQLException{
+        modeloPerfiles.mConsultaPerfiles();
+        
+        
+    }
+    
 }
