@@ -15,9 +15,9 @@ import java.sql.SQLException;
  */
 public class conecta {
     
-    public static Connection con;
+    static  Connection con;
     
-    public static Connection conexion() throws SQLException{
+    public static  Connection conexion() throws SQLException{
         //declaracion de variables de conexion   
             String driver = "com.mysql.jdbc.Driver";
             String user = "root";

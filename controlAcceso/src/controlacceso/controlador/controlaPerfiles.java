@@ -5,25 +5,16 @@
  */
 package controlacceso.controlador;
 
-import controlacceso.modelo.modeloPerfiles;
-import java.sql.SQLException;
 
 /**
  *
  * @author tuxmi
  */
 public class controlaPerfiles {
-    
-    public static int cIngresaPerfiles(String nombrePerfil, boolean estadoPerfil) throws SQLException{
-        int estadoInsert;
-        estadoInsert = modeloPerfiles.insertaPerfiles(nombrePerfil, estadoPerfil);
-        return estadoInsert;
-    }
-    
-    public static void cConsultaPerfiles() throws SQLException{
-        modeloPerfiles.mConsultaPerfiles();
+    public static boolean conStrBool(String vS){
         
-        
+        return true;
     }
-    
+ 
+     
 }

@@ -5,32 +5,32 @@
  */
 package controlacceso.vista;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
 import controlacceso.controlador.controlaPerfiles;
-import controlacceso.modelo.conecta;
+import controlacceso.modelo.modeloPerfiles;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
+//import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import controlacceso.modelo.modeloPerfiles.*;
+;
 
 /**
  *
  * @author tuxmi
  */
-public class perfiles extends javax.swing.JInternalFrame {
-
+public final class perfiles extends javax.swing.JInternalFrame {
+    
+    
     /**
-     * Creates new form seguridad
+     * Creates new form perfiles
+     * @throws java.sql.SQLException
      */
     public perfiles() throws SQLException {
         initComponents();
-         
+        llenaTabla();
     }
 
     /**
@@ -49,13 +49,9 @@ public class perfiles extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         perfilNombre = new javax.swing.JTextField();
         perfilEstado = new javax.swing.JCheckBox();
-        jButtonGuardaPerfil = new javax.swing.JButton();
-        jPanelEditar = new javax.swing.JPanel();
+        btnGuardaPerfil = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPerfiles = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -68,48 +64,12 @@ public class perfiles extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Estado");
 
-        jButtonGuardaPerfil.setText("Guardar");
-        jButtonGuardaPerfil.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardaPerfil.setText("Guardar");
+        btnGuardaPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonGuardaPerfilActionPerformed(evt);
+                btnGuardaPerfilActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanelCrearLayout = new javax.swing.GroupLayout(jPanelCrear);
-        jPanelCrear.setLayout(jPanelCrearLayout);
-        jPanelCrearLayout.setHorizontalGroup(
-            jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelCrearLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonGuardaPerfil)
-                    .addGroup(jPanelCrearLayout.createSequentialGroup()
-                        .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(perfilEstado)
-                            .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(355, Short.MAX_VALUE))
-        );
-        jPanelCrearLayout.setVerticalGroup(
-            jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelCrearLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(perfilEstado))
-                .addGap(34, 34, 34)
-                .addComponent(jButtonGuardaPerfil)
-                .addContainerGap(157, Short.MAX_VALUE))
-        );
-
-        jTabbedPane3.addTab("Crear", jPanelCrear);
 
         tablaPerfiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,60 +96,53 @@ public class perfiles extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tablaPerfiles);
-
-        jButton2.setText("Busca Perfil");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+        tablaPerfiles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaPerfilesMouseClicked(evt);
             }
         });
+        jScrollPane1.setViewportView(tablaPerfiles);
 
-        javax.swing.GroupLayout jPanelEditarLayout = new javax.swing.GroupLayout(jPanelEditar);
-        jPanelEditar.setLayout(jPanelEditarLayout);
-        jPanelEditarLayout.setHorizontalGroup(
-            jPanelEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelEditarLayout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(189, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEditarLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(224, 224, 224))
+        javax.swing.GroupLayout jPanelCrearLayout = new javax.swing.GroupLayout(jPanelCrear);
+        jPanelCrear.setLayout(jPanelCrearLayout);
+        jPanelCrearLayout.setHorizontalGroup(
+            jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCrearLayout.createSequentialGroup()
+                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelCrearLayout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(perfilEstado)
+                            .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardaPerfil)))
+                    .addGroup(jPanelCrearLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(308, Short.MAX_VALUE))
         );
-        jPanelEditarLayout.setVerticalGroup(
-            jPanelEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEditarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
-        );
-
-        jTabbedPane3.addTab("Editar", jPanelEditar);
-
-        jLabel3.setText("tabla 3");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel3)
-                .addContainerGap(647, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jLabel3)
-                .addContainerGap(269, Short.MAX_VALUE))
+        jPanelCrearLayout.setVerticalGroup(
+            jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCrearLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(perfilEstado))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGuardaPerfil)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        jTabbedPane3.addTab("Eliminar", jPanel4);
+        jTabbedPane3.addTab("Crear", jPanelCrear);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -216,85 +169,100 @@ public class perfiles extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonGuardaPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardaPerfilActionPerformed
+    
+    
+    private void btnGuardaPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardaPerfilActionPerformed
         try {
             // TODO add your handling code here:
             String nombrePerfil;
             boolean estadoPerfil;
-            
+
             nombrePerfil = perfilNombre.getText();
             estadoPerfil = perfilEstado.isSelected();
-            
-            System.out.println("el nombre del perfil es: " + nombrePerfil + " " + estadoPerfil);
-            
-            int estadoInsert=controlaPerfiles.cIngresaPerfiles(nombrePerfil, estadoPerfil);
-        
-                if(estadoInsert==1){
-                    JOptionPane.showMessageDialog(null, "Perfil Ingresado correctamente");
-                    perfilNombre.setText("");
-                    perfilEstado.setSelected(false);
-                    
-                }else{
-                    JOptionPane.showMessageDialog(null, "Error al ingresar el perfil");
-                }
-            
+
+//            int estadoInsert=controlaPerfiles.cIngresaPerfiles(nombrePerfil, estadoPerfil);
+            int estadoInsert = modeloPerfiles.insertaPerfiles(nombrePerfil, estadoPerfil);
+            if(estadoInsert==1){
+                llenaTabla();
+                JOptionPane.showMessageDialog(null, "Perfil Ingresado correctamente");
+                perfilNombre.setText("");
+                perfilEstado.setSelected(false);
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Error al ingresar el perfil");
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(perfiles.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
-    }//GEN-LAST:event_jButtonGuardaPerfilActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnGuardaPerfilActionPerformed
+
+    private void tablaPerfilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPerfilesMouseClicked
         // TODO add your handling code here:
-
+        int fila;
+        boolean estado = false;
+        String idPerfil, nombrePerfil, estadoS;
         
-//        mConsultaPerfiles mcp = new mConsultaPerfiles();    
+        fila = tablaPerfiles.getSelectedRow();
+        idPerfil = tablaPerfiles.getValueAt(fila, 0).toString();
+        nombrePerfil = tablaPerfiles.getValueAt(fila, 1).toString();
+        estadoS = tablaPerfiles.getValueAt(fila, 2).toString();
+        
+//convierte el estadoS que es string y toma valor 1 o 0 en true o false         
+        estado = estadoS.equals("1") ? true : false;
+        
+        perfilNombre.setText(nombrePerfil);
+        perfilEstado.setSelected(estado);
+//seguir trabajando desde aqui        
+                
+//        perfilEstado.setSelected(estado);
+        System.out.println("el estado es: " + estado);
+    }//GEN-LAST:event_tablaPerfilesMouseClicked
+
+    
+    public void llenaTabla(){
+        
+        //busca en la base de datos y llena la tabla
+
         DefaultTableModel modelo = new DefaultTableModel();
         tablaPerfiles.setModel(modelo);
         modelo.addColumn("Id");
         modelo.addColumn("Nombre");
         modelo.addColumn("Estado");
-//codigo migrado de modelo
-       
-        Connection con;
+        
         try {
-            con = (Connection) conecta.conexion();
-        Statement stmt = (Statement) con.createStatement();
-        ResultSet rs = stmt.executeQuery("Select * from tbl_perfiles where 1");
-        ResultSetMetaData rsmd = rs.getMetaData();
+//construlle modelo perfiles e importa los datos a esta clase
+            ResultSet rs;
+            modeloPerfiles mp = new modeloPerfiles();
+            rs = mp.mConsultaPerfiles();
+
+            ResultSetMetaData rsmd = rs.getMetaData();
 
 //ingresa las filas a un objeto
-        while(rs.next()){
-            Object[] fila = new Object[rsmd.getColumnCount()];
-            for (int i = 0; i<rsmd.getColumnCount(); i++){
-                fila[i] = rs.getObject(i+1);                
-            }
-            modelo.addRow(fila);
-        }
- //        fin codigo migrado modelo      
 
+            while(rs.next()){
+                Object[] fila = new Object[rsmd.getColumnCount()];
+                for (int i = 0; i<rsmd.getColumnCount(); i++){
+                    fila[i] = rs.getObject(i+1);
+                }
+                modelo.addRow(fila);
+            }
+            //        fin codigo migrado modelo
+            modeloPerfiles.cierraSesion();
 
         } catch (SQLException ex) {
             Logger.getLogger(perfiles.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
 
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButtonGuardaPerfil;
+    private javax.swing.JButton btnGuardaPerfil;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelCrear;
-    private javax.swing.JPanel jPanelEditar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JCheckBox perfilEstado;

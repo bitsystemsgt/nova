@@ -9,8 +9,6 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-
 import java.sql.SQLException;
 
 /**
@@ -19,9 +17,11 @@ import java.sql.SQLException;
  */
 public class modeloPerfiles {
     
+    static Connection con;
+    
     public static int insertaPerfiles(String nombrePerfil, boolean estadoPerfil) throws SQLException{
      
-        Connection con;
+//        Connection con;
         String isql = "INSERT INTO tbl_perfiles (perfiles_nombre, perfiles_estado) VALUES (?,?)";
         con = conecta.conexion();
 //        Statement stmt = (Statement) conexion.prepareStatement("insert into tbl_perfiles perfiles_nombre, perfiles_estado values (" +nombrePerfil+","+estadoPerfil +")");
@@ -31,29 +31,24 @@ public class modeloPerfiles {
         
         int resultado;
         resultado = pst.executeUpdate();
-        con.close();
+        cierraSesion();
         System.out.println("registro guardado " + resultado);
         return resultado;
     }
     
-    public static void mConsultaPerfiles() throws SQLException{
-        Connection con;
+    public ResultSet mConsultaPerfiles() throws SQLException{
+        
         con = conecta.conexion();
         
         Statement stmt = (Statement) con.createStatement();
         ResultSet resultadoPerfiles = stmt.executeQuery("Select * from tbl_perfiles where 1");
-        ResultSetMetaData rsmd = resultadoPerfiles.getMetaData();
-            
-        int cantReg = 0;
-        if(resultadoPerfiles.last()){
-            cantReg = resultadoPerfiles.getRow();
-            resultadoPerfiles.beforeFirst();
-        }
-                        
-               
-        System.out.println("el numero de registros es " + cantReg);
-    
+        return resultadoPerfiles;
         
+    }
+    
+    public static void cierraSesion() throws SQLException{
+        con.close();
+        System.out.println("Conexion cerrada");
     }
     
     
