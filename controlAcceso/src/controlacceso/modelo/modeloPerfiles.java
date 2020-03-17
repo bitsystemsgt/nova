@@ -36,12 +36,13 @@ public class modeloPerfiles {
         return resultado;
     }
     
-    public ResultSet mConsultaPerfiles() throws SQLException{
+    public static ResultSet mConsultaPerfiles(String cPerfil) throws SQLException{
         
         con = conecta.conexion();
         
         Statement stmt = (Statement) con.createStatement();
-        ResultSet resultadoPerfiles = stmt.executeQuery("Select * from tbl_perfiles where 1");
+//        System.out.println("Select * from tbl_perfiles " + cPerfil + "");
+        ResultSet resultadoPerfiles = stmt.executeQuery("Select * from tbl_perfiles " + cPerfil +"");
         return resultadoPerfiles;
         
     }

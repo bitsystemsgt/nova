@@ -8,7 +8,7 @@ package controlacceso.controlador;
 import java.sql.ResultSet;
 import controlacceso.modelo.seguridadModelo;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
+
 
 
 /**

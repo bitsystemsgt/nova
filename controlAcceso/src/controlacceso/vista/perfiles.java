@@ -52,6 +52,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
         btnGuardaPerfil = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPerfiles = new javax.swing.JTable();
+        btnActualizarPerfil = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -103,6 +104,13 @@ public final class perfiles extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tablaPerfiles);
 
+        btnActualizarPerfil.setText("Actualizar");
+        btnActualizarPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarPerfilActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelCrearLayout = new javax.swing.GroupLayout(jPanelCrear);
         jPanelCrear.setLayout(jPanelCrearLayout);
         jPanelCrearLayout.setHorizontalGroup(
@@ -118,7 +126,10 @@ public final class perfiles extends javax.swing.JInternalFrame {
                         .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(perfilEstado)
                             .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGuardaPerfil)))
+                            .addGroup(jPanelCrearLayout.createSequentialGroup()
+                                .addComponent(btnGuardaPerfil)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnActualizarPerfil))))
                     .addGroup(jPanelCrearLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -136,7 +147,9 @@ public final class perfiles extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(perfilEstado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnGuardaPerfil)
+                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardaPerfil)
+                    .addComponent(btnActualizarPerfil))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addContainerGap())
@@ -175,23 +188,30 @@ public final class perfiles extends javax.swing.JInternalFrame {
         try {
             // TODO add your handling code here:
             String nombrePerfil;
-            boolean estadoPerfil;
+            boolean estadoPerfil, perfilExiste;
 
             nombrePerfil = perfilNombre.getText();
             estadoPerfil = perfilEstado.isSelected();
-
-//            int estadoInsert=controlaPerfiles.cIngresaPerfiles(nombrePerfil, estadoPerfil);
-            int estadoInsert = modeloPerfiles.insertaPerfiles(nombrePerfil, estadoPerfil);
-            if(estadoInsert==1){
-                llenaTabla();
-                JOptionPane.showMessageDialog(null, "Perfil Ingresado correctamente");
-                perfilNombre.setText("");
-                perfilEstado.setSelected(false);
-
+            
+//compara si el perfil ya existe en la base de datos
+            perfilExiste = controlaPerfiles.cPerfilExisgte(nombrePerfil);
+            
+            if(perfilExiste){
+                JOptionPane.showMessageDialog(null, "El usuario ya existe");
             }else{
-                JOptionPane.showMessageDialog(null, "Error al ingresar el perfil");
-            }
+//Si el perfil no existe llama al metodo para insertar el perfil                
+                int estadoInsert = modeloPerfiles.insertaPerfiles(nombrePerfil, estadoPerfil);
+                if(estadoInsert==1){
+                    llenaTabla();
+                    JOptionPane.showMessageDialog(null, "Perfil Ingresado correctamente");
+                    perfilNombre.setText("");
+                    perfilEstado.setSelected(false);
 
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error al ingresar el perfil");
+                }
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(perfiles.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -201,7 +221,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
     private void tablaPerfilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPerfilesMouseClicked
         // TODO add your handling code here:
         int fila;
-        boolean estado = false;
+        boolean estado;
         String idPerfil, nombrePerfil, estadoS;
         
         fila = tablaPerfiles.getSelectedRow();
@@ -210,7 +230,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
         estadoS = tablaPerfiles.getValueAt(fila, 2).toString();
         
 //convierte el estadoS que es string y toma valor 1 o 0 en true o false         
-        estado = estadoS.equals("1") ? true : false;
+        estado = estadoS.equals("1");
         
         perfilNombre.setText(nombrePerfil);
         perfilEstado.setSelected(estado);
@@ -219,6 +239,14 @@ public final class perfiles extends javax.swing.JInternalFrame {
 //        perfilEstado.setSelected(estado);
         System.out.println("el estado es: " + estado);
     }//GEN-LAST:event_tablaPerfilesMouseClicked
+
+    private void btnActualizarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarPerfilActionPerformed
+        // TODO add your handling code here:
+
+        String idPerfil, nombrePerfil, estadoPerfil;
+        
+        
+    }//GEN-LAST:event_btnActualizarPerfilActionPerformed
 
     
     public void llenaTabla(){
@@ -234,8 +262,9 @@ public final class perfiles extends javax.swing.JInternalFrame {
         try {
 //construlle modelo perfiles e importa los datos a esta clase
             ResultSet rs;
-            modeloPerfiles mp = new modeloPerfiles();
-            rs = mp.mConsultaPerfiles();
+            
+            String cPerfil="";
+            rs = modeloPerfiles.mConsultaPerfiles(cPerfil);
 
             ResultSetMetaData rsmd = rs.getMetaData();
 
@@ -258,6 +287,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarPerfil;
     private javax.swing.JButton btnGuardaPerfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
