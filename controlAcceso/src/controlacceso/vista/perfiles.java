@@ -53,6 +53,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPerfiles = new javax.swing.JTable();
         btnActualizarPerfil = new javax.swing.JButton();
+        jLabelPerfilId = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -116,32 +117,34 @@ public final class perfiles extends javax.swing.JInternalFrame {
         jPanelCrearLayout.setHorizontalGroup(
             jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCrearLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelPerfilId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(perfilEstado)
+                    .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelCrearLayout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(perfilEstado)
-                            .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelCrearLayout.createSequentialGroup()
-                                .addComponent(btnGuardaPerfil)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnActualizarPerfil))))
-                    .addGroup(jPanelCrearLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(308, Short.MAX_VALUE))
+                        .addComponent(btnGuardaPerfil)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnActualizarPerfil)))
+                .addContainerGap(152, Short.MAX_VALUE))
+            .addGroup(jPanelCrearLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanelCrearLayout.setVerticalGroup(
             jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCrearLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(28, 28, 28)
+                .addComponent(jLabelPerfilId, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(perfilNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCrearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
@@ -151,7 +154,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
                     .addComponent(btnGuardaPerfil)
                     .addComponent(btnActualizarPerfil))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -194,7 +197,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
             estadoPerfil = perfilEstado.isSelected();
             
 //compara si el perfil ya existe en la base de datos
-            perfilExiste = controlaPerfiles.cPerfilExisgte(nombrePerfil);
+            perfilExiste = controlaPerfiles.cPerfilExiste(nombrePerfil);
             
             if(perfilExiste){
                 JOptionPane.showMessageDialog(null, "El usuario ya existe");
@@ -222,16 +225,17 @@ public final class perfiles extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         int fila;
         boolean estado;
-        String idPerfil, nombrePerfil, estadoS;
+        String perfilId, nombrePerfil, estadoS;
         
         fila = tablaPerfiles.getSelectedRow();
-        idPerfil = tablaPerfiles.getValueAt(fila, 0).toString();
+        perfilId = tablaPerfiles.getValueAt(fila, 0).toString();
         nombrePerfil = tablaPerfiles.getValueAt(fila, 1).toString();
         estadoS = tablaPerfiles.getValueAt(fila, 2).toString();
         
 //convierte el estadoS que es string y toma valor 1 o 0 en true o false         
         estado = estadoS.equals("1");
         
+        jLabelPerfilId.setText(perfilId);
         perfilNombre.setText(nombrePerfil);
         perfilEstado.setSelected(estado);
 //seguir trabajando desde aqui        
@@ -242,8 +246,29 @@ public final class perfiles extends javax.swing.JInternalFrame {
 
     private void btnActualizarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarPerfilActionPerformed
         // TODO add your handling code here:
-
-        String idPerfil, nombrePerfil, estadoPerfil;
+        int perfilActualizado = 0;
+        String idPerfil, nombrePerfil;
+        boolean estadoPerfil;
+        
+        idPerfil = jLabelPerfilId.getText();
+        nombrePerfil = perfilNombre.getText();
+        estadoPerfil = perfilEstado.isSelected();
+        System.out.println("el estado al tomarlo de checkbox es: " + estadoPerfil);
+        try {
+            
+            perfilActualizado = controlaPerfiles.cActualizaPerfil(idPerfil, nombrePerfil, estadoPerfil);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(perfiles.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if (perfilActualizado == 1){
+            System.out.println("Perfil actualizado correctamente");
+            llenaTabla();
+        }else{
+            System.out.println("Error al actualizar la tabla");
+        }
+       
         
         
     }//GEN-LAST:event_btnActualizarPerfilActionPerformed
@@ -291,6 +316,7 @@ public final class perfiles extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnGuardaPerfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelPerfilId;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelCrear;
     private javax.swing.JScrollPane jScrollPane1;

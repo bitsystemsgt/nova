@@ -8,6 +8,7 @@ package controlacceso.controlador;
 import java.sql.ResultSet;
 import controlacceso.modelo.seguridadModelo;
 import java.sql.SQLException;
+import org.apache.commons.codec.digest.DigestUtils;
 
 
 
@@ -31,10 +32,10 @@ public class controlaIngreso {
         String usuario="", contrasena="", estado = null;
         while(consultaBD.next()){
             usuario = consultaBD.getString("usuarios_nombre");
-            contrasena = consultaBD.getString("usuarios_contrasena");
+            contrasena = consultaBD.getString("usuarios_contrasena");                
             estado = consultaBD.getString("usuarios_estado");
         }
-            
+            pass = cEncripta(pass);
             if(usuario.equals(user) && contrasena.equals(pass)){
                 if(estado.equals("1")){
                     return true;
@@ -48,6 +49,10 @@ public class controlaIngreso {
             }
   
         
+    }
+    public static String cEncripta(String pass){
+        
+        return DigestUtils.sha3_512Hex(pass);
     }
     
 }

@@ -21,10 +21,10 @@ public class modeloPerfiles {
     
     public static int insertaPerfiles(String nombrePerfil, boolean estadoPerfil) throws SQLException{
      
-//        Connection con;
-        String isql = "INSERT INTO tbl_perfiles (perfiles_nombre, perfiles_estado) VALUES (?,?)";
         con = conecta.conexion();
-//        Statement stmt = (Statement) conexion.prepareStatement("insert into tbl_perfiles perfiles_nombre, perfiles_estado values (" +nombrePerfil+","+estadoPerfil +")");
+        
+        String isql = "INSERT INTO tbl_perfiles (perfiles_nombre, perfiles_estado) VALUES (?,?)";
+
         PreparedStatement pst = (PreparedStatement) con.prepareStatement(isql);
         pst.setString(1, nombrePerfil);
         pst.setBoolean(2, estadoPerfil);
@@ -32,7 +32,7 @@ public class modeloPerfiles {
         int resultado;
         resultado = pst.executeUpdate();
         cierraSesion();
-        System.out.println("registro guardado " + resultado);
+        
         return resultado;
     }
     
@@ -47,9 +47,27 @@ public class modeloPerfiles {
         
     }
     
+    public static int mActualizaPerfil(Integer perfilId, String perfilNombre, boolean perfilEstado) throws SQLException{
+
+        con = conecta.conexion();
+        int respuesta;
+        String usql = "UPDATE tbl_perfiles SET perfiles_nombre = ?, perfiles_estado = ? WHERE id_perfiles = ?";
+        
+        PreparedStatement pst = (PreparedStatement) con.prepareStatement(usql);
+        pst.setString(1, perfilNombre);
+        pst.setBoolean(2, perfilEstado);
+        pst.setInt(3, perfilId);
+        
+        respuesta = pst.executeUpdate();
+        cierraSesion();
+        
+        return respuesta;
+        
+    }
+    
     public static void cierraSesion() throws SQLException{
         con.close();
-        System.out.println("Conexion cerrada");
+        System.out.println("Conexion cerrada Perfiles");
     }
     
     

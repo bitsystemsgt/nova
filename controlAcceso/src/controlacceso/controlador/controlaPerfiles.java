@@ -6,6 +6,7 @@
 package controlacceso.controlador;
 
 import controlacceso.modelo.modeloPerfiles;
+//import static controlacceso.modelo.modeloPerfiles.mActualizaPerfil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,7 +15,7 @@ import java.sql.SQLException;
  * @author tuxmi
  */
 public class controlaPerfiles {
-    public static boolean cPerfilExisgte(String nombrePerfil) throws SQLException{
+    public static boolean cPerfilExiste(String nombrePerfil) throws SQLException{
         
         boolean perfilExiste;
         String cPerfil, perfilBD ="";        
@@ -34,6 +35,23 @@ public class controlaPerfiles {
         modeloPerfiles.cierraSesion();
         
         return perfilExiste;
+    }
+    
+    public static int cActualizaPerfil(String perfilIdS, String perfilNombre, boolean perfilEstado) throws SQLException{
+        
+        
+        int perfilActualizado = 0;
+        Integer perfilId;
+//revisa que el boton actualizar halla enviado el valor id del perfil a modificar
+        if(perfilIdS.equals("")){
+            System.out.println("no se ha seleccionado un perfil de la tabla o este no existe");
+        }else{
+//pasa String a Integer        
+            perfilId = Integer.parseInt(perfilIdS);
+//llama a metodo para actualizar el perfil
+            perfilActualizado = modeloPerfiles.mActualizaPerfil(perfilId, perfilNombre, perfilEstado);
+        }        
+        return perfilActualizado;
     }
  
      

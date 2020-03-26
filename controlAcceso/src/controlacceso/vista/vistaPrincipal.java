@@ -37,7 +37,8 @@ public class vistaPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuPerfilesUsuario = new javax.swing.JMenuItem();
+        jMenuUsuarios = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,14 +61,22 @@ public class vistaPrincipal extends javax.swing.JFrame {
 
         jMenu2.setText("Seguridad");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK));
-        jMenuItem1.setText("Perfiles de usuarios");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuPerfilesUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK));
+        jMenuPerfilesUsuario.setText("Perfiles de usuarios");
+        jMenuPerfilesUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuPerfilesUsuarioActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(jMenuPerfilesUsuario);
+
+        jMenuUsuarios.setText("Usuarios");
+        jMenuUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuUsuariosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuUsuarios);
 
         jMenuBar1.add(jMenu2);
 
@@ -87,7 +96,7 @@ public class vistaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuPerfilesUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPerfilesUsuarioActionPerformed
         // TODO add your handling code here:
         try {
         
@@ -101,7 +110,20 @@ public class vistaPrincipal extends javax.swing.JFrame {
         }
         
 
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMenuPerfilesUsuarioActionPerformed
+
+    private void jMenuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuUsuariosActionPerformed
+        try {
+            // TODO add your handling code here:
+            usuarios ventanaUsuarios = new usuarios();
+            this.escritorioPrincipal.add(ventanaUsuarios);
+            ventanaUsuarios.show();
+            System.out.println("abriendo ventana interna usuarios");
+        } catch (SQLException ex) {
+            Logger.getLogger(vistaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jMenuUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,7 +165,8 @@ public class vistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuPerfilesUsuario;
+    private javax.swing.JMenuItem jMenuUsuarios;
     private javax.swing.JPopupMenu jPopupMenu1;
     // End of variables declaration//GEN-END:variables
 }

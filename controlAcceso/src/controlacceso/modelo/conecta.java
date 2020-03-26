@@ -20,9 +20,11 @@ public class conecta {
     public static  Connection conexion() throws SQLException{
         //declaracion de variables de conexion   
             String driver = "com.mysql.jdbc.Driver";
-            String user = "root";
-            String pass = "Phanter5919";
-            String url = "jdbc:mysql://localhost:3306/bd_controlacceso";
+            String user = "bits";
+//            String pass = "Phanter5919";
+            String pass = "Coffee5919";
+//            String url = "jdbc:mysql://localhost:3306/bd_controlacceso";
+            String url = "jdbc:mysql://sigma.bitsystems.sytes.net:3306/bd_controlacceso";
        
         try {
             Class.forName(driver);
